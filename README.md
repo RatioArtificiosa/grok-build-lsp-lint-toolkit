@@ -5,8 +5,8 @@
 Language servers, formatters and linters for [Grok Build](https://x.ai), working together on macOS, Linux and Windows.
 
 ```bash
-git clone https://github.com/RatioArtificiosa/grok-lsp-toolkit
-cd grok-lsp-toolkit
+git clone https://github.com/RatioArtificiosa/Grok-Build-LSP-Lint-Toolkit
+cd Grok-Build-LSP-Lint-Toolkit
 node install.mjs
 ```
 
@@ -259,6 +259,17 @@ Clients that refuse ambiguous extensions will resolve *neither*. That is why `as
 Adding a language is mostly a matter of adding a row to the table and a directory beside the others. The two files worth reading first are `lib/format-runner.js`, which holds the whole formatting mechanism, and one plugin's `.lsp.json`, which is four lines of configuration.
 
 If you find a language server that needs a different lifecycle notification, or a client quirk worth papering over, that belongs in `lib/lsp-open-proxy.js` where every plugin benefits from it.
+
+### Testing the proxy
+
+The proxy is the one part of this toolkit that is easy to test wrongly, and a faulty probe produces a confident negative. Three ways a probe lies, each of which cost real time to find:
+
+- **A server that closes stdin while it starts.** rust-analyzer does this during indexing. A probe that writes first and checks the result second reports "the pipe is being closed" and looks like a proxy failure, when the server simply was not listening yet.
+- **Matching a reply by assuming field order.** A strict check that expects `result` immediately after `id` reports "no reply" for requests that were answered, because LSP does not guarantee key order in a response object.
+- **Sending a burst before the server is ready.** Several requests issued at once outrun a server that is still indexing, and every one of them reads as unanswered.
+
+The shape that works: wait for the answer rather than for a fixed duration, match responses by `id`, and compare a direct call against a proxied one at the same file and position. The proxied run must send no `didOpen` of its own, or it proves nothing about the proxy.
+
 
 ---
 
