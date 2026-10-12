@@ -1,12 +1,12 @@
-# Grok LSP Toolkit
+# Grok Build LSP Lint Toolkit
 
 **Seven languages. Real language servers. Live diagnostics. One install.**
 
 Language servers, formatters and linters for [Grok Build](https://x.ai), working together on macOS, Linux and Windows.
 
 ```bash
-git clone https://github.com/RatioArtificiosa/Grok-Build-LSP-Lint-Toolkit
-cd Grok-Build-LSP-Lint-Toolkit
+git clone https://github.com/RatioArtificiosa/grok-build-lsp-lint-toolkit
+cd grok-build-lsp-lint-toolkit
 node install.mjs
 ```
 

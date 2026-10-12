@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Cross-platform installer for the Grok LSP Toolkit.
+// Cross-platform installer for the Grok Build LSP Lint Toolkit.
 //
 //   node install.mjs               install or update every plugin
 //   node install.mjs --dry-run     show what would happen, touch nothing
@@ -189,7 +189,7 @@ function install() {
     );
   }
 
-  say("Grok LSP Toolkit installer");
+  say("Grok Build LSP Lint Toolkit installer");
   say("  platform    " + process.platform + " (" + process.arch + ")");
   say("  grok        " + grok);
   say("  hook entry  " + HOOK_ENTRY);
