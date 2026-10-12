@@ -15,7 +15,7 @@ ruff --version
 
 ## Notes
 
-- The hook runs uff check --fix and then uff format, so lint fixes and formatting both land in one pass.
+- The hook runs ruff check --fix and then ruff format, so lint fixes and formatting both land in one pass.
 - Pyright resolves imports from the interpreter and any configured virtual environment, so run it inside the environment your project uses.
 
 ## Enable LSP tools in Grok Build

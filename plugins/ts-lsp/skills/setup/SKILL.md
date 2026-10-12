@@ -15,9 +15,8 @@ typescript-language-server --version
 
 ## Notes
 
-- **Pin TypeScript to the 5.x line.** 	ypescript-language-server drives the compiler through lib/tsserver.js, and TypeScript 7 removed that file. A project with TypeScript 7 installed fails with a message about a *missing* installation rather than a wrong version, which is easy to misread. Use 
-pm install --save-dev typescript@5 per project.
-- Biome is the formatter. If a project uses Prettier instead, point the hook at it by editing ormat.json.
+- **Pin TypeScript to the 5.x line.** typescript-language-server drives the compiler through lib/tsserver.js, and TypeScript 7 removed that file. A project with TypeScript 7 installed fails with a message about a *missing* installation rather than a wrong version, which is easy to misread. Use npm install --save-dev typescript@5 per project.
+- Biome is the formatter. If a project uses Prettier instead, point the hook at it by editing format.json.
 
 ## Enable LSP tools in Grok Build
 

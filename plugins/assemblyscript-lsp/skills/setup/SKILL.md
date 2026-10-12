@@ -16,10 +16,9 @@ npx eslint --version
 
 ## Notes
 
-- **This plugin deliberately ships no language server.** AssemblyScript compiles from .ts, so it would claim the same extension as 	s-lsp - and a client that refuses ambiguous extensions would then treat .ts as configured for nobody. Two plugins claiming one extension is worse than one plugin claiming it well, so this plugin carries only the formatter and 	s-lsp owns the language server.
+- **This plugin deliberately ships no language server.** AssemblyScript compiles from .ts, so it would claim the same extension as ts-lsp - and a client that refuses ambiguous extensions would then treat .ts as configured for nobody. Two plugins claiming one extension is worse than one plugin claiming it well, so this plugin carries only the formatter and ts-lsp owns the language server.
 - ESLint is a linter rather than a formatter: it applies fixable rule violations and will not reindent code the way a formatter does.
-- The hook calls ESLint through 
-px, which prefers the project's own copy over any global install - so a project pinned to an older ESLint is linted with the version it expects.
+- The hook calls ESLint through npx, which prefers the project's own copy over any global install - so a project pinned to an older ESLint is linted with the version it expects.
 
 ## Enable LSP tools in Grok Build
 
