@@ -60,11 +60,34 @@ without the proxy     hover -> (empty)      goToDefinition -> null
 with the proxy        hover -> fn describe(s: Shape): string
 ```
 
-It also notices when a file has changed on disk since it was opened and sends `didChange`, so answers never come from a stale copy.
+It re-reads the file on every request instead of trusting that it was opened once. If the bytes on disk have changed since the server last saw them, it sends `didChange` first, so an answer never comes from a stale copy.
 
-Nothing is rewritten, reordered or dropped. Requests the proxy does not recognise, and every response, pass through byte for byte. The one operation that already worked, `documentSymbol`, is deliberately excluded from the proxy's logic so that it cannot be regressed.
+Nothing is rewritten, reordered or dropped. Each message crosses as the exact bytes the client sent, and the parse that decides whether to inject runs on a separate copy, so a request the proxy does not understand still arrives intact. If a frame ever defeats that parse, the proxy stops inspecting and drains the rest of the stream verbatim. The worst case is a plain pipe, never a corrupted one.
+
+`documentSymbol` is included in the set of requests that get a document. Leaving it out is tempting, because it often appears to work already, but that appearance depends on the server falling back to reading the file from disk. Pyright does not, and answers with zero symbols for a document it was never told about. The operation looks safe to ignore and is not.
 
 If a future Grok Build release starts sending `didOpen` itself, the proxy simply has nothing to do.
+
+### What has been measured
+
+Each language below was driven through the proxy with a client that never sends `didOpen`, then compared against the same server called directly by a client that does. Hover text and symbol counts came back identical in every case.
+
+| Language | Server | Hover through the proxy | Symbols |
+|---|---|---|---|
+| TypeScript / JavaScript | typescript-language-server | `function describe(s: Shape): string` | 3 |
+| Python | pyright | `(function) def describe(s: str) -> str` | 5 |
+| Go | gopls | `func Describe(t Thing) string` | 3 |
+| C / C++ | clangd | ``### function `area` `` then `int` | 3 |
+| Rust | rust-analyzer | `pub fn describe(s: Shape) -> String` | 4 |
+| Zig | zls | `fn add(a: u32, b: u32) u32` | 4 |
+
+Drift detection was measured the same way. With the client silent, a Python file's return type was changed on disk from `str` to `int`; the next hover reported `int`. The earlier version of this proxy reported `str` forever after the first read, which is exactly the kind of error that makes a wrong answer look like a right one.
+
+Two things that cost real time to discover, both worth knowing before you decide something is broken:
+
+**rust-analyzer says nothing for the first 30 to 60 seconds.** It indexes the workspace before answering anything, and a request made during that window comes back empty rather than delayed. Measured on a small crate: 47 seconds to the first answer cold, under 8 seconds once the build cache is warm. If hover does nothing in a Rust project, wait and try again.
+
+**zls needs a `build.zig`.** With one it answers immediately. Without one it has no module graph to resolve against and looks like a server that never started.
 
 ---
 
@@ -219,6 +242,12 @@ Then confirm the proxy is present and the path in the plugin's `.lsp.json` point
 
 **The language server starts and answers nothing.**
 Usually a version mismatch, most often Zig, where zls and zig must match exactly. Or a project the server cannot understand: rust-analyzer wants a `Cargo.toml`, gopls wants a `go.mod`, clangd wants a `compile_commands.json` for anything beyond the current file.
+
+**A language server never answers at all, and nothing appears on stderr.**
+Check the `command` field in the plugin's `.lsp.json`. It must be a bare executable name such as `typescript-language-server`, never a path ending in `.cmd` or `.bat`. Node refuses to spawn those unless a shell is involved, and the failure is invisible from the client's side: the server simply never replies. Bare names are resolved through `PATHEXT` and work correctly, which is why every plugin here uses one.
+
+**Rust hover does nothing.**
+Wait. rust-analyzer indexes before it answers, and an empty hover during indexing is indistinguishable from a broken server. If it is still empty after a minute, check that the project is a real cargo workspace and that no stray `Cargo.toml` sits in a parent directory. Cargo searches upward, and a malformed manifest above your project will stop it dead with an error that names the parent file rather than your own.
 
 **A plugin claims an extension another plugin also claims.**
 Clients that refuse ambiguous extensions will resolve *neither*. That is why `assemblyscript-lsp` ships no language server: AssemblyScript compiles from `.ts`, and two plugins claiming `.ts` would leave TypeScript with no server at all.
