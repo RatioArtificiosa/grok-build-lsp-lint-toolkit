@@ -1,11 +1,11 @@
 {
-    "name":  "rust-lsp",
-    "version":  "1.0.0",
-    "description":  "rust-analyzer plus rustfmt and Clippy for Grok Build",
-    "keywords":  [
-                     "rust",
-                     "rust-analyzer",
-                     "clippy",
-                     "rustfmt"
-                 ]
+  "name": "rust-lsp",
+  "version": "1.0.0",
+  "description": "rust-analyzer plus rustfmt and Clippy for Grok Build",
+  "keywords": [
+    "rust",
+    "rust-analyzer",
+    "clippy",
+    "rustfmt"
+  ]
 }

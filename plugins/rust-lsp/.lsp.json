@@ -1,18 +1,18 @@
 {
-    "rust-analyzer":  {
-                          "command":  "node",
-                          "args":  [
-                                       "@PROXY@",
-                                       "rust-analyzer"
-                                   ],
-                          "extensionToLanguage":  {
-                                                      ".rs":  "rust"
-                                                  },
-                          "startupTimeout":  30000,
-                          "initializationOptions":  {
-                                                        "check":  {
-                                                                      "command":  "clippy"
-                                                                  }
-                                                    }
-                      }
+  "rust-analyzer": {
+    "command": "node",
+    "args": [
+      "@PROXY@",
+      "rust-analyzer"
+    ],
+    "extensionToLanguage": {
+      ".rs": "rust"
+    },
+    "startupTimeout": 30000,
+    "initializationOptions": {
+      "check": {
+        "command": "clippy"
+      }
+    }
+  }
 }

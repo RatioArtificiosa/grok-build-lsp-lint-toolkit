@@ -1,14 +1,14 @@
 {
-    "zls":  {
-                "command":  "node",
-                "args":  [
-                             "@PROXY@",
-                             "zls"
-                         ],
-                "extensionToLanguage":  {
-                                            ".zig":  "zig",
-                                            ".zon":  "zig"
-                                        },
-                "startupTimeout":  30000
-            }
+  "zls": {
+    "command": "node",
+    "args": [
+      "@PROXY@",
+      "zls"
+    ],
+    "extensionToLanguage": {
+      ".zig": "zig",
+      ".zon": "zig"
+    },
+    "startupTimeout": 30000
+  }
 }

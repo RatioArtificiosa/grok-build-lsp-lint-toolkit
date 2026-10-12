@@ -1,11 +1,11 @@
 {
-    "name":  "go-lsp",
-    "version":  "1.0.0",
-    "description":  "gopls plus gofmt for Grok Build",
-    "keywords":  [
-                     "go",
-                     "golang",
-                     "gopls",
-                     "gofmt"
-                 ]
+  "name": "go-lsp",
+  "version": "1.0.0",
+  "description": "gopls plus gofmt for Grok Build",
+  "keywords": [
+    "go",
+    "golang",
+    "gopls",
+    "gofmt"
+  ]
 }

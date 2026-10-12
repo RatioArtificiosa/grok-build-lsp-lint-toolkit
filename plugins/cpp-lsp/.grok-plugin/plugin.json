@@ -1,12 +1,12 @@
 {
-    "name":  "cpp-lsp",
-    "version":  "1.0.0",
-    "description":  "clangd plus clang-format for Grok Build",
-    "keywords":  [
-                     "c",
-                     "cpp",
-                     "clangd",
-                     "clang-format",
-                     "clang-tidy"
-                 ]
+  "name": "cpp-lsp",
+  "version": "1.0.0",
+  "description": "clangd plus clang-format for Grok Build",
+  "keywords": [
+    "c",
+    "cpp",
+    "clangd",
+    "clang-format",
+    "clang-tidy"
+  ]
 }

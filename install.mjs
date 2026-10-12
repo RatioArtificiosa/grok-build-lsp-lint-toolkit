@@ -4,6 +4,7 @@
 //   node install.mjs               install or update every plugin
 //   node install.mjs --dry-run     show what would happen, touch nothing
 //   node install.mjs --uninstall   remove the plugins this toolkit installed
+//   node install.mjs --verify      check the plugins match lib/, install nothing
 //
 // What it does, in order:
 //   1. locates the Grok CLI
@@ -15,6 +16,13 @@
 //
 // Nothing outside ~/.grok is touched, and no file already there is overwritten
 // except this toolkit's own staging directory and the proxy.
+//
+// On the shared files: `lib/` holds the canonical copy of the formatter runner
+// and its two platform entry points. Each plugin carries its own identical copy,
+// because a Grok plugin has to be a self-contained directory the marketplace can
+// install on its own - a plugin that reached outside itself for its hook would
+// break for anyone who installed it without this repository. That duplication is
+// deliberate, and `--verify` is what keeps it honest.
 
 import { execFileSync, spawnSync } from "node:child_process";
 import fs from "node:fs";
@@ -39,6 +47,7 @@ const PROXY_FOR_JSON = PROXY_DEST.split(path.sep).join("/");
 const args = new Set(process.argv.slice(2));
 const DRY = args.has("--dry-run") || args.has("-n");
 const UNINSTALL = args.has("--uninstall");
+const VERIFY = args.has("--verify");
 
 const say = (msg) => process.stdout.write(msg + "\n");
 const ok = (msg) => say("  \u2713 " + msg);
@@ -81,6 +90,62 @@ function readPlugins() {
     .sort();
 }
 
+// ----------------------------------------------------------------- verify --
+//
+// The formatter runner and its two platform entry points exist once in lib/ and
+// once inside each plugin. The copies have to stay identical, or one plugin will
+// behave differently from the one beside it and nothing will say so until
+// somebody edits a file in that language. This compares them and names any that
+// have drifted, so the difference is caught here rather than in the field.
+function verifyShared() {
+  const shared = [
+    ["format-runner.js", "format.js"],
+    ["format.cmd", "format.cmd"],
+    ["format.sh", "format.sh"],
+  ];
+  const plugins = readPlugins();
+  let drift = 0;
+  let checked = 0;
+
+  say("Checking " + plugins.length + " plugins against lib/");
+
+  // Line endings are normalised before comparing. A Windows checkout has CRLF
+  // and a Linux one has LF, and that is the repository's business rather than a
+  // sign that the files disagree.
+  const normalise = (text) => text.replace(/\r\n/g, "\n");
+
+  for (const [source, target] of shared) {
+    const canonical = normalise(fs.readFileSync(path.join(HERE, "lib", source), "utf8"));
+    for (const name of plugins) {
+      const copyPath = path.join(HERE, "plugins", name, "hooks", "bin", target);
+      if (!fs.existsSync(copyPath)) {
+        warn(name.padEnd(20) + target.padEnd(18) + "missing");
+        drift++;
+        continue;
+      }
+      checked++;
+      if (normalise(fs.readFileSync(copyPath, "utf8")) !== canonical) {
+        warn(name.padEnd(20) + target.padEnd(18) + "differs from lib/" + source);
+        drift++;
+      }
+    }
+  }
+
+  say("");
+  if (drift === 0) {
+    ok(checked + " files identical to lib/");
+    say("");
+    return;
+  }
+  fail(
+    drift +
+      " of " +
+      (checked + drift) +
+      " files have drifted from lib/.\n" +
+      "    Update the plugin copy from the canonical file in lib/."
+  );
+}
+
 // ------------------------------------------------- copy with substitution --
 function copyTree(src, dest, replacements) {
   fs.mkdirSync(dest, { recursive: true });
@@ -112,6 +177,8 @@ function copyTree(src, dest, replacements) {
 
 // ------------------------------------------------------------------ install --
 function install() {
+  if (VERIFY) return verifyShared();
+
   const grok = findGrok();
   if (!grok) {
     fail(

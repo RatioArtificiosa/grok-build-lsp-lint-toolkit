@@ -1,14 +1,14 @@
 {
-    "extensions":  [
-                       ".rs"
-                   ],
-    "commands":  [
-                     {
-                         "args":  [
-                                      "--edition",
-                                      "2021"
-                                  ],
-                         "command":  "rustfmt"
-                     }
-                 ]
+  "extensions": [
+    ".rs"
+  ],
+  "commands": [
+    {
+      "command": "rustfmt",
+      "args": [
+        "--edition",
+        "2021"
+      ]
+    }
+  ]
 }

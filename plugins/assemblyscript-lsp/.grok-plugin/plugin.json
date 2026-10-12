@@ -1,11 +1,11 @@
 {
-    "name":  "assemblyscript-lsp",
-    "version":  "1.0.0",
-    "description":  "ESLint for AssemblyScript projects in Grok Build",
-    "keywords":  [
-                     "assemblyscript",
-                     "webassembly",
-                     "wasm",
-                     "eslint"
-                 ]
+  "name": "assemblyscript-lsp",
+  "version": "1.0.0",
+  "description": "ESLint for AssemblyScript projects in Grok Build",
+  "keywords": [
+    "assemblyscript",
+    "webassembly",
+    "wasm",
+    "eslint"
+  ]
 }

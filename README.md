@@ -179,6 +179,7 @@ Useful flags:
 
 ```bash
 node install.mjs --dry-run     # show every step, write nothing
+node install.mjs --verify      # check the plugins match lib/, install nothing
 node install.mjs --uninstall   # remove the plugins this toolkit installed
 ```
 
@@ -220,7 +221,9 @@ rust-lsp/
   skills/setup/SKILL.md      how to install that language's toolchain
 ```
 
-The formatter hooks are one shared JavaScript file with a two-line platform wrapper. Windows cannot execute a `.sh` and Unix cannot execute a `.cmd`, so both ship and the installer names the right one in `hooks.json`. The logic is the same everywhere: read the event, check the extension, run the formatter.
+The formatter hooks are one shared JavaScript file with a two-line platform wrapper, copied into every plugin. Windows cannot execute a `.sh` and Unix cannot execute a `.cmd`, so both ship and the installer names the right one in `hooks.json`. The logic is the same everywhere: read the event, check the extension, run the formatter.
+
+**Why each plugin carries its own copy.** `lib/format-runner.js`, `lib/format.cmd` and `lib/format.sh` are the canonical versions. Each plugin also holds an identical copy of all three, because a Grok plugin has to be a directory the marketplace can install on its own. A plugin whose hook reached outside itself would work from this repository and break for anyone who installed that one plugin by another route. The duplication is deliberate, and `node install.mjs --verify` is what stops the copies from drifting apart without anyone noticing.
 
 Extensions are matched case-insensitively, files with unrelated extensions are left completely alone, and a hook that goes wrong exits quietly rather than failing your tool call.
 
@@ -257,6 +260,8 @@ Clients that refuse ambiguous extensions will resolve *neither*. That is why `as
 ## Contributing
 
 Adding a language is mostly a matter of adding a row to the table and a directory beside the others. The two files worth reading first are `lib/format-runner.js`, which holds the whole formatting mechanism, and one plugin's `.lsp.json`, which is four lines of configuration.
+
+A new plugin needs all three shared files in its `hooks/bin/` directory, because that directory has to stand on its own once the plugin is installed. Copy them from `lib/` rather than from a neighbouring plugin, then run `node install.mjs --verify`. It compares every plugin against `lib/` and names anything that does not match, so a missed file or a stale copy shows up immediately instead of as one language quietly behaving differently from the rest.
 
 If you find a language server that needs a different lifecycle notification, or a client quirk worth papering over, that belongs in `lib/lsp-open-proxy.js` where every plugin benefits from it.
 
