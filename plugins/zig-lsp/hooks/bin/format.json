@@ -1,0 +1,14 @@
+{
+    "extensions":  [
+                       ".zig",
+                       ".zon"
+                   ],
+    "commands":  [
+                     {
+                         "args":  [
+                                      "fmt"
+                                  ],
+                         "command":  "zig"
+                     }
+                 ]
+}

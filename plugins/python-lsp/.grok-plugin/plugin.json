@@ -1,0 +1,10 @@
+{
+    "name":  "python-lsp",
+    "version":  "1.0.0",
+    "description":  "Pyright plus Ruff for Grok Build",
+    "keywords":  [
+                     "python",
+                     "pyright",
+                     "ruff"
+                 ]
+}

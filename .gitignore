@@ -1,0 +1,18 @@
+# Editor / OS
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Local experiments
+playground/
+*.local.json
+
+# Installer artefacts - never commit a resolved copy of the plugins, since the
+# shipped files intentionally carry @FORMAT_ENTRY@ and @PROXY@ placeholders.
+staged/

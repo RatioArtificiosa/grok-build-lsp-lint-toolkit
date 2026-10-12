@@ -1,0 +1,15 @@
+{
+    "extensions":  [
+                       ".ts"
+                   ],
+    "commands":  [
+                     {
+                         "args":  [
+                                      "eslint",
+                                      "--fix"
+                                  ],
+                         "command":  "npx.cmd",
+                         "shell":  true
+                     }
+                 ]
+}

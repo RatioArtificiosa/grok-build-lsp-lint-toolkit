@@ -1,0 +1,14 @@
+{
+    "pyright-langserver":  {
+                               "command":  "node",
+                               "args":  [
+                                            "@PROXY@",
+                                            "pyright-langserver",
+                                            "--stdio"
+                                        ],
+                               "extensionToLanguage":  {
+                                                           ".py":  "python"
+                                                       },
+                               "startupTimeout":  30000
+                           }
+}

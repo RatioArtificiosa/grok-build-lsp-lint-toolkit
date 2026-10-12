@@ -1,0 +1,20 @@
+{
+    "clangd":  {
+                   "command":  "node",
+                   "args":  [
+                                "@PROXY@",
+                                "clangd"
+                            ],
+                   "extensionToLanguage":  {
+                                               ".c":  "cpp",
+                                               ".h":  "cpp",
+                                               ".cc":  "cpp",
+                                               ".cpp":  "cpp",
+                                               ".cxx":  "cpp",
+                                               ".hpp":  "cpp",
+                                               ".hxx":  "cpp",
+                                               ".hh":  "cpp"
+                                           },
+                   "startupTimeout":  30000
+               }
+}

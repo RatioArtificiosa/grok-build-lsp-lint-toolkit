@@ -1,0 +1,19 @@
+{
+    "typescript-language-server":  {
+                                       "command":  "node",
+                                       "args":  [
+                                                    "@PROXY@",
+                                                    "typescript-language-server",
+                                                    "--stdio"
+                                                ],
+                                       "extensionToLanguage":  {
+                                                                   ".ts":  "typescript",
+                                                                   ".tsx":  "typescript",
+                                                                   ".js":  "typescript",
+                                                                   ".jsx":  "typescript",
+                                                                   ".mjs":  "typescript",
+                                                                   ".cjs":  "typescript"
+                                                               },
+                                       "startupTimeout":  30000
+                                   }
+}

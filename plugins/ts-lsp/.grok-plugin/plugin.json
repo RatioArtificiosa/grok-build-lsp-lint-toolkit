@@ -1,0 +1,11 @@
+{
+    "name":  "ts-lsp",
+    "version":  "1.0.0",
+    "description":  "TypeScript language server plus Biome for Grok Build",
+    "keywords":  [
+                     "typescript",
+                     "javascript",
+                     "biome",
+                     "tsx"
+                 ]
+}

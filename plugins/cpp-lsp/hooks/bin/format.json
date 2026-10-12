@@ -1,0 +1,20 @@
+{
+    "extensions":  [
+                       ".c",
+                       ".h",
+                       ".cc",
+                       ".cpp",
+                       ".cxx",
+                       ".hpp",
+                       ".hxx",
+                       ".hh"
+                   ],
+    "commands":  [
+                     {
+                         "args":  [
+                                      "-i"
+                                  ],
+                         "command":  "clang-format"
+                     }
+                 ]
+}

@@ -1,0 +1,13 @@
+{
+    "gopls":  {
+                  "command":  "node",
+                  "args":  [
+                               "@PROXY@",
+                               "gopls"
+                           ],
+                  "extensionToLanguage":  {
+                                              ".go":  "go"
+                                          },
+                  "startupTimeout":  30000
+              }
+}

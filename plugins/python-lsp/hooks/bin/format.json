@@ -1,0 +1,20 @@
+{
+    "extensions":  [
+                       ".py"
+                   ],
+    "commands":  [
+                     {
+                         "args":  [
+                                      "check",
+                                      "--fix"
+                                  ],
+                         "command":  "ruff"
+                     },
+                     {
+                         "args":  [
+                                      "format"
+                                  ],
+                         "command":  "ruff"
+                     }
+                 ]
+}

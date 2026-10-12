@@ -1,0 +1,13 @@
+{
+    "extensions":  [
+                       ".go"
+                   ],
+    "commands":  [
+                     {
+                         "args":  [
+                                      "-w"
+                                  ],
+                         "command":  "gofmt"
+                     }
+                 ]
+}
