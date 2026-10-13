@@ -9,6 +9,8 @@
     "extensionToLanguage": {
       ".ts": "typescript",
       ".tsx": "typescript",
+      ".mts": "typescript",
+      ".cts": "typescript",
       ".js": "typescript",
       ".jsx": "typescript",
       ".mjs": "typescript",

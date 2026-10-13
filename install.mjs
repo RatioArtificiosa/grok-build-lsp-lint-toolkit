@@ -39,7 +39,7 @@ const HOOK_ENTRY = IS_WINDOWS ? "bin/format.cmd" : "bin/format.sh";
 
 // The proxy path is substituted into a JSON file, and a JSON string treats a
 // backslash as an escape character - a Windows path inserted verbatim produces
-// `"C:\Users\..."`, where `\U` is not a valid escape and the whole file fails to
+// an illustrative Windows path, where `\U` is not a valid escape and the whole
 // parse. Forward slashes are accepted by Node on every platform and need no
 // escaping, so the value is normalised once here rather than escaped per use.
 const PROXY_FOR_JSON = PROXY_DEST.split(path.sep).join("/");

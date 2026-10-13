@@ -6,14 +6,18 @@
       "clangd"
     ],
     "extensionToLanguage": {
-      ".c": "cpp",
-      ".h": "cpp",
+      ".c": "c",
+      ".h": "c",
       ".cc": "cpp",
       ".cpp": "cpp",
       ".cxx": "cpp",
       ".hpp": "cpp",
       ".hxx": "cpp",
-      ".hh": "cpp"
+      ".hh": "cpp",
+      ".C": "cpp",
+      ".H": "cpp",
+      ".cppm": "cpp",
+      ".ixx": "cpp"
     },
     "startupTimeout": 30000
   }

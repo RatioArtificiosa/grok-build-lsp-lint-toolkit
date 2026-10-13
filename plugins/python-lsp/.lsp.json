@@ -7,7 +7,8 @@
       "--stdio"
     ],
     "extensionToLanguage": {
-      ".py": "python"
+      ".py": "python",
+      ".pyi": "python"
     },
     "startupTimeout": 30000
   }
