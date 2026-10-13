@@ -199,8 +199,12 @@ export function makeResolver() {
 			// is often a .cmd shim, and needsShell() keys off the extension, so
 			// passing the bare name here would spawn it without a shell and fail
 			// with EINVAL even though the tool is installed.
+			//
+			// The timeout is generous on purpose: on a cold CI runner the first
+			// spawn of a Node-based tool can take well over ten seconds, and a
+			// timeout here would report a present tool as versionless.
 			const r = run(found, versionArgs || [], {
-				timeout: 6000,
+				timeout: 20000,
 				shell: spec && spec.shell === true,
 			});
 			const text = (r.stdout || "") + "\n" + (r.stderr || "");
